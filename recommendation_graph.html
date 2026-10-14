@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1>CineGraph — Movie Recommendation Network</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1>CineGraph — Movie Recommendation Network</h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #0d0d0d;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#fd79a8", "font": {"color": "#e8e8e8"}, "id": "1226863", "label": "The Super Mario Galaxy Movie", "shape": "dot", "size": 13.268, "title": "The Super Mario Galaxy Movie (2026)\nRating: 6.8/10  |  Votes: 537\nGenres: Family, Comedy, Adventure, Fantasy, Animation"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "83533", "label": "Avatar: Fire and Ash", "shape": "dot", "size": 15.113000000000001, "title": "Avatar: Fire and Ash (2025)\nRating: 7.4/10  |  Votes: 2,672\nGenres: Science Fiction, Adventure, Fantasy"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1198994", "label": "Send Help", "shape": "dot", "size": 14.120000000000001, "title": "Send Help (2026)\nRating: 7.0/10  |  Votes: 1,046\nGenres: Horror, Thriller, Comedy"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "687163", "label": "Project Hail Mary", "shape": "dot", "size": 17.674999999999997, "title": "Project Hail Mary (2026)\nRating: 8.2/10  |  Votes: 1,604\nGenres: Science Fiction, Adventure"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1327819", "label": "Hoppers", "shape": "dot", "size": 15.727999999999998, "title": "Hoppers (2026)\nRating: 7.6/10  |  Votes: 492\nGenres: Animation, Family, Science Fiction, Comedy, Adventure"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "1290821", "label": "Shelter", "shape": "dot", "size": 13.325000000000001, "title": "Shelter (2026)\nRating: 6.8/10  |  Votes: 573\nGenres: Action, Crime, Thriller"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "840464", "label": "Greenland 2: Migration", "shape": "dot", "size": 12.5, "title": "Greenland 2: Migration (2026)\nRating: 6.5/10  |  Votes: 889\nGenres: Adventure, Thriller, Science Fiction"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1304313", "label": "Lee Cronin\u0027s The Mummy", "shape": "dot", "size": 13.700000000000001, "title": "Lee Cronin\u0027s The Mummy (2026)\nRating: 6.9/10  |  Votes: 108\nGenres: Horror, Mystery"}, {"color": "#2ecc71", "font": {"color": "#e8e8e8"}, "id": "20222", "label": "Sex with Love", "shape": "dot", "size": 12.5, "title": "Sex with Love (2003)\nRating: 6.5/10  |  Votes: 241\nGenres: Comedy, Romance"}, {"color": "#9b59b6", "font": {"color": "#e8e8e8"}, "id": "1171145", "label": "Crime 101", "shape": "dot", "size": 13.928, "title": "Crime 101 (2026)\nRating: 7.0/10  |  Votes: 733\nGenres: Crime, Thriller"}, {"color": "#fd79a8", "font": {"color": "#e8e8e8"}, "id": "502356", "label": "The Super Mario Bros. Movie", "shape": "dot", "size": 15.761, "title": "The Super Mario Bros. Movie (2023)\nRating: 7.6/10  |  Votes: 10,502\nGenres: Family, Comedy, Adventure, Fantasy, Animation"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1297842", "label": "GOAT", "shape": "dot", "size": 16.706, "title": "GOAT (2026)\nRating: 7.9/10  |  Votes: 417\nGenres: Animation, Comedy, Family"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1311031", "label": "Demon Slayer: Kimetsu no Yaiba Infinity Castle", "shape": "dot", "size": 16.04, "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle (2025)\nRating: 7.7/10  |  Votes: 804\nGenres: Animation, Action, Fantasy"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "350", "label": "The Devil Wears Prada", "shape": "dot", "size": 15.169999999999998, "title": "The Devil Wears Prada (2006)\nRating: 7.4/10  |  Votes: 12,957\nGenres: Drama, Comedy"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1084242", "label": "Zootopia 2", "shape": "dot", "size": 15.812000000000001, "title": "Zootopia 2 (2025)\nRating: 7.6/10  |  Votes: 2,579\nGenres: Animation, Family, Mystery, Adventure, Comedy"}, {"color": "#888888", "font": {"color": "#e8e8e8"}, "id": "1368166", "label": "The Housemaid", "shape": "dot", "size": 14.66, "title": "The Housemaid (2025)\nRating: 7.2/10  |  Votes: 1,887\nGenres: Mystery, Thriller"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "1419406", "label": "The Shadow\u0027s Edge", "shape": "dot", "size": 14.654, "title": "The Shadow\u0027s Edge (2025)\nRating: 7.2/10  |  Votes: 582\nGenres: Action, Crime, Drama, Thriller"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "1265609", "label": "War Machine", "shape": "dot", "size": 14.729000000000001, "title": "War Machine (2026)\nRating: 7.2/10  |  Votes: 1,473\nGenres: Action, Science Fiction, Thriller"}, {"color": "#888888", "font": {"color": "#e8e8e8"}, "id": "1084187", "label": "Pretty Lethal", "shape": "dot", "size": 13.511, "title": "Pretty Lethal (2026)\nRating: 6.8/10  |  Votes: 289\nGenres: Music, Thriller, Action, Horror"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "634649", "label": "Spider-Man: No Way Home", "shape": "dot", "size": 16.802, "title": "Spider-Man: No Way Home (2021)\nRating: 7.9/10  |  Votes: 21,811\nGenres: Action, Adventure, Science Fiction"}, {"color": "#e84393", "font": {"color": "#e8e8e8"}, "id": "1367642", "label": "Reminders of Him", "shape": "dot", "size": 14.600000000000001, "title": "Reminders of Him (2026)\nRating: 7.2/10  |  Votes: 134\nGenres: Romance, Drama"}, {"color": "#2ecc71", "font": {"color": "#e8e8e8"}, "id": "1115544", "label": "Mike \u0026 Nick \u0026 Nick \u0026 Alice", "shape": "dot", "size": 13.238000000000001, "title": "Mike \u0026 Nick \u0026 Nick \u0026 Alice (2026)\nRating: 6.7/10  |  Votes: 254\nGenres: Comedy, Science Fiction, Crime"}, {"color": "#e84393", "font": {"color": "#e8e8e8"}, "id": "1316092", "label": "\"Wuthering Heights\"", "shape": "dot", "size": 12.587, "title": "\"Wuthering Heights\" (2026)\nRating: 6.5/10  |  Votes: 789\nGenres: Romance, Drama"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1266127", "label": "Ready or Not: Here I Come", "shape": "dot", "size": 13.799, "title": "Ready or Not: Here I Come (2026)\nRating: 6.9/10  |  Votes: 246\nGenres: Horror, Comedy"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "157336", "label": "Interstellar", "shape": "dot", "size": 18.410000000000004, "title": "Interstellar (2014)\nRating: 8.5/10  |  Votes: 39,434\nGenres: Adventure, Drama, Science Fiction"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "24428", "label": "The Avengers", "shape": "dot", "size": 17.012, "title": "The Avengers (2012)\nRating: 8.0/10  |  Votes: 37,336\nGenres: Science Fiction, Action, Adventure"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1272837", "label": "28 Years Later: The Bone Temple", "shape": "dot", "size": 14.453, "title": "28 Years Later: The Bone Temple (2026)\nRating: 7.2/10  |  Votes: 1,038\nGenres: Horror, Thriller, Science Fiction"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "1168190", "label": "The Wrecking Crew", "shape": "dot", "size": 13.64, "title": "The Wrecking Crew (2026)\nRating: 6.9/10  |  Votes: 901\nGenres: Action, Comedy, Crime, Mystery"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "1242898", "label": "Predator: Badlands", "shape": "dot", "size": 16.082, "title": "Predator: Badlands (2025)\nRating: 7.7/10  |  Votes: 2,635\nGenres: Action, Science Fiction, Adventure"}, {"color": "#9b59b6", "font": {"color": "#e8e8e8"}, "id": "875828", "label": "Peaky Blinders: The Immortal Man", "shape": "dot", "size": 14.678, "title": "Peaky Blinders: The Immortal Man (2026)\nRating: 7.2/10  |  Votes: 811\nGenres: Crime, Drama"}, {"color": "#9b59b6", "font": {"color": "#e8e8e8"}, "id": "425274", "label": "Now You See Me: Now You Don\u0027t", "shape": "dot", "size": 12.524000000000001, "title": "Now You See Me: Now You Don\u0027t (2025)\nRating: 6.5/10  |  Votes: 1,390\nGenres: Crime, Thriller"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "299536", "label": "Avengers: Infinity War", "shape": "dot", "size": 17.699, "title": "Avengers: Infinity War (2018)\nRating: 8.2/10  |  Votes: 31,764\nGenres: Adventure, Action, Science Fiction"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "1236153", "label": "Mercy", "shape": "dot", "size": 13.91, "title": "Mercy (2026)\nRating: 7.0/10  |  Votes: 1,133\nGenres: Science Fiction, Action, Thriller, Crime"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "278", "label": "The Shawshank Redemption", "shape": "dot", "size": 19.154, "title": "The Shawshank Redemption (1994)\nRating: 8.7/10  |  Votes: 30,148\nGenres: Drama, Crime"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "238", "label": "The Godfather", "shape": "dot", "size": 19.058, "title": "The Godfather (1972)\nRating: 8.7/10  |  Votes: 22,776\nGenres: Drama, Crime"}, {"color": "#e84393", "font": {"color": "#e8e8e8"}, "id": "1325734", "label": "The Drama", "shape": "dot", "size": 14.093, "title": "The Drama (2026)\nRating: 7.0/10  |  Votes: 483\nGenres: Romance, Comedy, Drama"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "299534", "label": "Avengers: Endgame", "shape": "dot", "size": 17.701999999999998, "title": "Avengers: Endgame (2019)\nRating: 8.2/10  |  Votes: 27,528\nGenres: Adventure, Science Fiction, Action"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "1119449", "label": "Good Luck, Have Fun, Don\u0027t Die", "shape": "dot", "size": 13.823, "title": "Good Luck, Have Fun, Don\u0027t Die (2026)\nRating: 6.9/10  |  Votes: 363\nGenres: Science Fiction, Action, Comedy"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "1010581", "label": "My Fault", "shape": "dot", "size": 16.1, "title": "My Fault (2023)\nRating: 7.7/10  |  Votes: 4,031\nGenres: Drama, Romance, Thriller"}, {"color": "#a29bfe", "font": {"color": "#e8e8e8"}, "id": "803796", "label": "KPop Demon Hunters", "shape": "dot", "size": 17.06, "title": "KPop Demon Hunters (2025)\nRating: 8.0/10  |  Votes: 2,651\nGenres: Fantasy, Music, Comedy, Animation"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "77338", "label": "The Intouchables", "shape": "dot", "size": 17.900000000000002, "title": "The Intouchables (2011)\nRating: 8.3/10  |  Votes: 18,313\nGenres: Drama, Comedy"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1038392", "label": "The Conjuring: Last Rites", "shape": "dot", "size": 13.636999999999999, "title": "The Conjuring: Last Rites (2025)\nRating: 6.9/10  |  Votes: 1,751\nGenres: Horror"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "181808", "label": "Star Wars: The Last Jedi", "shape": "dot", "size": 13.265, "title": "Star Wars: The Last Jedi (2017)\nRating: 6.8/10  |  Votes: 16,236\nGenres: Adventure, Action, Science Fiction"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1246049", "label": "Dracula", "shape": "dot", "size": 14.245999999999999, "title": "Dracula (2025)\nRating: 7.1/10  |  Votes: 1,098\nGenres: Horror, Fantasy, Romance"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "27205", "label": "Inception", "shape": "dot", "size": 18.116, "title": "Inception (2010)\nRating: 8.4/10  |  Votes: 39,044\nGenres: Action, Science Fiction, Adventure"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "744275", "label": "After We Fell", "shape": "dot", "size": 14.0, "title": "After We Fell (2021)\nRating: 7.0/10  |  Votes: 2,723\nGenres: Drama, Romance"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "533535", "label": "Deadpool \u0026 Wolverine", "shape": "dot", "size": 15.674, "title": "Deadpool \u0026 Wolverine (2024)\nRating: 7.6/10  |  Votes: 8,490\nGenres: Action, Comedy, Science Fiction"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "19995", "label": "Avatar", "shape": "dot", "size": 15.803, "title": "Avatar (2009)\nRating: 7.6/10  |  Votes: 33,808\nGenres: Science Fiction, Action, Adventure"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "858024", "label": "Hamnet", "shape": "dot", "size": 16.187, "title": "Hamnet (2025)\nRating: 7.7/10  |  Votes: 1,245\nGenres: Drama, Romance, History"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "615", "label": "The Passion of the Christ", "shape": "dot", "size": 15.611, "title": "The Passion of the Christ (2004)\nRating: 7.5/10  |  Votes: 5,162\nGenres: Drama"}, {"color": "#2ecc71", "font": {"color": "#e8e8e8"}, "id": "496243", "label": "Parasite", "shape": "dot", "size": 18.482, "title": "Parasite (2019)\nRating: 8.5/10  |  Votes: 20,449\nGenres: Comedy, Thriller, Drama"}, {"color": "#636e72", "font": {"color": "#e8e8e8"}, "id": "680", "label": "Pulp Fiction", "shape": "dot", "size": 18.455, "title": "Pulp Fiction (1994)\nRating: 8.5/10  |  Votes: 30,022\nGenres: Thriller, Crime, Comedy"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "597", "label": "Titanic", "shape": "dot", "size": 16.706, "title": "Titanic (1997)\nRating: 7.9/10  |  Votes: 27,013\nGenres: Drama, Romance"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "1306368", "label": "The Rip", "shape": "dot", "size": 14.155999999999999, "title": "The Rip (2026)\nRating: 7.1/10  |  Votes: 1,522\nGenres: Action, Thriller, Crime"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "155", "label": "The Dark Knight", "shape": "dot", "size": 18.584000000000003, "title": "The Dark Knight (2008)\nRating: 8.5/10  |  Votes: 35,528\nGenres: Action, Crime, Thriller"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "129", "label": "Spirited Away", "shape": "dot", "size": 18.602000000000004, "title": "Spirited Away (2001)\nRating: 8.5/10  |  Votes: 18,180\nGenres: Animation, Family, Fantasy"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "872585", "label": "Oppenheimer", "shape": "dot", "size": 17.096, "title": "Oppenheimer (2023)\nRating: 8.0/10  |  Votes: 11,620\nGenres: Drama, History"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1011985", "label": "Kung Fu Panda 4", "shape": "dot", "size": 14.0, "title": "Kung Fu Panda 4 (2024)\nRating: 7.0/10  |  Votes: 3,455\nGenres: Animation, Family, Action, Comedy, Adventure, Fantasy"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "991494", "label": "The SpongeBob Movie: Search for SquarePants", "shape": "dot", "size": 13.337, "title": "The SpongeBob Movie: Search for SquarePants (2025)\nRating: 6.8/10  |  Votes: 267\nGenres: Animation, Family, Comedy, Adventure, Fantasy"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "122", "label": "The Lord of the Rings: The Return of the King", "shape": "dot", "size": 18.488, "title": "The Lord of the Rings: The Return of the King (2003)\nRating: 8.5/10  |  Votes: 26,350\nGenres: Adventure, Fantasy, Action"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1408208", "label": "Exit 8", "shape": "dot", "size": 12.794, "title": "Exit 8 (2025)\nRating: 6.6/10  |  Votes: 291\nGenres: Horror, Mystery"}, {"color": "#2ecc71", "font": {"color": "#e8e8e8"}, "id": "346698", "label": "Barbie", "shape": "dot", "size": 13.778, "title": "Barbie (2023)\nRating: 6.9/10  |  Votes: 10,981\nGenres: Comedy, Adventure"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "76600", "label": "Avatar: The Way of Water", "shape": "dot", "size": 15.776, "title": "Avatar: The Way of Water (2022)\nRating: 7.6/10  |  Votes: 13,982\nGenres: Action, Adventure, Science Fiction"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "1233413", "label": "Sinners", "shape": "dot", "size": 15.407, "title": "Sinners (2025)\nRating: 7.5/10  |  Votes: 4,349\nGenres: Horror, Action, Thriller"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "14836", "label": "Coraline", "shape": "dot", "size": 16.697, "title": "Coraline (2009)\nRating: 7.9/10  |  Votes: 8,874\nGenres: Animation, Family, Fantasy"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "324857", "label": "Spider-Man: Into the Spider-Verse", "shape": "dot", "size": 18.182000000000002, "title": "Spider-Man: Into the Spider-Verse (2018)\nRating: 8.4/10  |  Votes: 17,084\nGenres: Animation, Action, Adventure, Science Fiction"}, {"color": "#2ecc71", "font": {"color": "#e8e8e8"}, "id": "467905", "label": "How to Make a Killing", "shape": "dot", "size": 13.852999999999998, "title": "How to Make a Killing (2026)\nRating: 7.0/10  |  Votes: 283\nGenres: Comedy, Thriller"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "1061474", "label": "Superman", "shape": "dot", "size": 15.029, "title": "Superman (2025)\nRating: 7.3/10  |  Votes: 4,624\nGenres: Science Fiction, Adventure, Action"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "671", "label": "Harry Potter and the Philosopher\u0027s Stone", "shape": "dot", "size": 16.694, "title": "Harry Potter and the Philosopher\u0027s Stone (2001)\nRating: 7.9/10  |  Votes: 29,412\nGenres: Adventure, Fantasy"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "911430", "label": "F1", "shape": "dot", "size": 16.256, "title": "F1 (2025)\nRating: 7.8/10  |  Votes: 3,755\nGenres: Action, Drama"}, {"color": "#e67e22", "font": {"color": "#e8e8e8"}, "id": "120", "label": "The Lord of the Rings: The Fellowship of the Ring", "shape": "dot", "size": 18.293, "title": "The Lord of the Rings: The Fellowship of the Ring (2001)\nRating: 8.4/10  |  Votes: 27,349\nGenres: Adventure, Fantasy, Action"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1117857", "label": "In Your Dreams", "shape": "dot", "size": 13.892000000000001, "title": "In Your Dreams (2025)\nRating: 7.0/10  |  Votes: 206\nGenres: Animation, Family, Comedy, Adventure, Fantasy"}, {"color": "#00cec9", "font": {"color": "#e8e8e8"}, "id": "912649", "label": "Venom: The Last Dance", "shape": "dot", "size": 12.98, "title": "Venom: The Last Dance (2024)\nRating: 6.7/10  |  Votes: 4,125\nGenres: Science Fiction, Action, Adventure"}, {"color": "#9b59b6", "font": {"color": "#e8e8e8"}, "id": "807", "label": "Se7en", "shape": "dot", "size": 18.14, "title": "Se7en (1995)\nRating: 8.4/10  |  Votes: 22,921\nGenres: Crime, Mystery, Thriller"}, {"color": "#3498db", "font": {"color": "#e8e8e8"}, "id": "402431", "label": "Wicked", "shape": "dot", "size": 13.736, "title": "Wicked (2024)\nRating: 6.9/10  |  Votes: 2,971\nGenres: Drama, Romance, Fantasy"}, {"color": "#e74c3c", "font": {"color": "#e8e8e8"}, "id": "361743", "label": "Top Gun: Maverick", "shape": "dot", "size": 17.455999999999996, "title": "Top Gun: Maverick (2022)\nRating: 8.2/10  |  Votes: 10,779\nGenres: Action, Drama"}, {"color": "#636e72", "font": {"color": "#e8e8e8"}, "id": "1054867", "label": "One Battle After Another", "shape": "dot", "size": 15.11, "title": "One Battle After Another (2025)\nRating: 7.4/10  |  Votes: 3,511\nGenres: Thriller, Crime, Comedy"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "1241982", "label": "Moana 2", "shape": "dot", "size": 13.982, "title": "Moana 2 (2024)\nRating: 7.0/10  |  Votes: 3,027\nGenres: Animation, Adventure, Family, Comedy, Fantasy"}, {"color": "#d63031", "font": {"color": "#e8e8e8"}, "id": "567609", "label": "Ready or Not", "shape": "dot", "size": 14.158999999999999, "title": "Ready or Not (2019)\nRating: 7.1/10  |  Votes: 5,288\nGenres: Horror, Comedy"}, {"color": "#f1c40f", "font": {"color": "#e8e8e8"}, "id": "569094", "label": "Spider-Man: Across the Spider-Verse", "shape": "dot", "size": 17.999000000000002, "title": "Spider-Man: Across the Spider-Verse (2023)\nRating: 8.3/10  |  Votes: 8,466\nGenres: Animation, Action, Adventure, Science Fiction"}]);
+                  edges = new vis.DataSet([]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 2, "shadow": {"enabled": true, "size": 10}}, "edges": {"smooth": {"type": "continuous"}, "shadow": false}, "physics": {"forceAtlas2Based": {"gravitationalConstant": -60, "centralGravity": 0.005, "springLength": 120, "springConstant": 0.08}, "solver": "forceAtlas2Based", "stabilization": {"iterations": 150}}, "interaction": {"hover": true, "tooltipDelay": 100, "navigationButtons": true, "keyboard": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

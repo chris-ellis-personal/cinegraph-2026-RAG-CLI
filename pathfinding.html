@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1>Hidden Connection: Interstellar → Nothing But Trouble</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1>Hidden Connection: Interstellar → Nothing But Trouble</h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #0d0d0d;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_topher_grace", "label": "actor_topher_grace", "shape": "dot", "size": 8, "title": "Topher Grace"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_272", "label": "movie_272", "shape": "dot", "size": 8, "title": "Batman Begins (2005)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_tupac_shakur", "label": "actor_tupac_shakur", "shape": "dot", "size": 8, "title": "Tupac Shakur"}, {"color": "#00c9b1", "font": {"color": "#e8e8e8"}, "id": "actor_demi_moore", "label": "Demi Moore", "shape": "ellipse", "size": 18, "title": "Demi Moore"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_1124", "label": "movie_1124", "shape": "dot", "size": 8, "title": "The Prestige (2006)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_1485", "label": "movie_1485", "shape": "dot", "size": 8, "title": "Get Carter (1971)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_3179", "label": "movie_3179", "shape": "dot", "size": 8, "title": "Beavis and Butt-Head Do America (1996)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_5971", "label": "movie_5971", "shape": "dot", "size": 8, "title": "We\u0027re No Angels (1989)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_john_candy", "label": "actor_john_candy", "shape": "dot", "size": 8, "title": "John Candy"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_251", "label": "movie_251", "shape": "dot", "size": 8, "title": "Ghost (1990)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_taylor_negron", "label": "actor_taylor_negron", "shape": "dot", "size": 8, "title": "Taylor Negron"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_mackenzie_foy", "label": "actor_mackenzie_foy", "shape": "dot", "size": 8, "title": "Mackenzie Foy"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_shaughan_seymour", "label": "actor_shaughan_seymour", "shape": "dot", "size": 8, "title": "Shaughan Seymour"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_nicholas_jones", "label": "actor_nicholas_jones", "shape": "dot", "size": 8, "title": "Nicholas Jones"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_993", "label": "movie_993", "shape": "dot", "size": 8, "title": "Sleuth (1972)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_anne_hathaway", "label": "actor_anne_hathaway", "shape": "dot", "size": 8, "title": "Anne Hathaway"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_raymond_j._barry", "label": "actor_raymond_j._barry", "shape": "dot", "size": 8, "title": "Raymond J. Barry"}, {"color": "#00c9b1", "font": {"color": "#e8e8e8"}, "id": "actor_michael_caine", "label": "Michael Caine", "shape": "ellipse", "size": 18, "title": "Michael Caine"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_joss_ackland", "label": "actor_joss_ackland", "shape": "dot", "size": 8, "title": "Joss Ackland"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_wes_bentley", "label": "actor_wes_bentley", "shape": "dot", "size": 8, "title": "Wes Bentley"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_818", "label": "movie_818", "shape": "dot", "size": 8, "title": "Austin Powers in Goldmember (2002)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_nathaniel_parker", "label": "actor_nathaniel_parker", "shape": "dot", "size": 8, "title": "Nathaniel Parker"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_4478", "label": "movie_4478", "shape": "dot", "size": 8, "title": "Indecent Proposal (1993)"}, {"color": "#f5c518", "font": {"color": "#e8e8e8"}, "id": "movie_11933", "label": "Nothing But Trouble (1991)", "shape": "star", "size": 25, "title": "Nothing But Trouble (1991)"}, {"color": "#f5c518", "font": {"color": "#e8e8e8"}, "id": "movie_13195", "label": "Flawless (2007)", "shape": "star", "size": 25, "title": "Flawless (2007)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_4421", "label": "movie_4421", "shape": "dot", "size": 8, "title": "G.I. Jane (1997)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_daniel_baldwin", "label": "actor_daniel_baldwin", "shape": "dot", "size": 8, "title": "Daniel Baldwin"}, {"color": "#f5c518", "font": {"color": "#e8e8e8"}, "id": "movie_157336", "label": "Interstellar (2014)", "shape": "star", "size": 25, "title": "Interstellar (2014)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_jessica_chastain", "label": "actor_jessica_chastain", "shape": "dot", "size": 8, "title": "Jessica Chastain"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_lambert_wilson", "label": "actor_lambert_wilson", "shape": "dot", "size": 8, "title": "Lambert Wilson"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_70706", "label": "movie_70706", "shape": "dot", "size": 8, "title": "Very Good Girls (2013)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_silas_carson", "label": "actor_silas_carson", "shape": "dot", "size": 8, "title": "Silas Carson"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_881", "label": "movie_881", "shape": "dot", "size": 8, "title": "A Few Good Men (1992)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_chevy_chase", "label": "actor_chevy_chase", "shape": "dot", "size": 8, "title": "Chevy Chase"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_155", "label": "movie_155", "shape": "dot", "size": 8, "title": "The Dark Knight (2008)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_3432", "label": "movie_3432", "shape": "dot", "size": 8, "title": "Mr. Brooks (2007)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_dan_aykroyd", "label": "actor_dan_aykroyd", "shape": "dot", "size": 8, "title": "Dan Aykroyd"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_983", "label": "movie_983", "shape": "dot", "size": 8, "title": "The Man Who Would Be King (1975)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "movie_1493", "label": "movie_1493", "shape": "dot", "size": 8, "title": "Miss Congeniality (2000)"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_matthew_mcconaughey", "label": "actor_matthew_mcconaughey", "shape": "dot", "size": 8, "title": "Matthew McConaughey"}, {"color": "#3a3a3a", "font": {"color": "#e8e8e8"}, "id": "actor_casey_affleck", "label": "actor_casey_affleck", "shape": "dot", "size": 8, "title": "Casey Affleck"}]);
+                  edges = new vis.DataSet([{"color": "#f5c518", "from": "movie_157336", "to": "actor_michael_caine", "width": 3}, {"color": "#f5c518", "from": "actor_michael_caine", "to": "movie_13195", "width": 3}, {"color": "#f5c518", "from": "movie_13195", "to": "actor_demi_moore", "width": 3}, {"color": "#f5c518", "from": "actor_demi_moore", "to": "movie_11933", "width": 3}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_155", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_272", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_818", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_983", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_993", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_1124", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_1485", "width": 1}, {"color": "#2a2a2a", "from": "actor_michael_caine", "to": "movie_1493", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_chevy_chase", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_dan_aykroyd", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_john_candy", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_daniel_baldwin", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_taylor_negron", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_raymond_j._barry", "width": 1}, {"color": "#2a2a2a", "from": "movie_11933", "to": "actor_tupac_shakur", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_251", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_881", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_3179", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_3432", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_4421", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_4478", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_70706", "width": 1}, {"color": "#2a2a2a", "from": "actor_demi_moore", "to": "movie_5971", "width": 1}, {"color": "#2a2a2a", "from": "movie_13195", "to": "actor_lambert_wilson", "width": 1}, {"color": "#2a2a2a", "from": "movie_13195", "to": "actor_nathaniel_parker", "width": 1}, {"color": "#2a2a2a", "from": "movie_13195", "to": "actor_shaughan_seymour", "width": 1}, {"color": "#2a2a2a", "from": "movie_13195", "to": "actor_nicholas_jones", "width": 1}, {"color": "#2a2a2a", "from": "movie_13195", "to": "actor_joss_ackland", "width": 1}, {"color": "#2a2a2a", "from": "movie_13195", "to": "actor_silas_carson", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_matthew_mcconaughey", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_anne_hathaway", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_jessica_chastain", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_casey_affleck", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_wes_bentley", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_topher_grace", "width": 1}, {"color": "#2a2a2a", "from": "movie_157336", "to": "actor_mackenzie_foy", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 2, "shadow": {"enabled": true, "size": 10}}, "edges": {"smooth": {"type": "continuous"}, "shadow": false}, "physics": {"forceAtlas2Based": {"gravitationalConstant": -60, "centralGravity": 0.005, "springLength": 120, "springConstant": 0.08}, "solver": "forceAtlas2Based", "stabilization": {"iterations": 150}}, "interaction": {"hover": true, "tooltipDelay": 100, "navigationButtons": true, "keyboard": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

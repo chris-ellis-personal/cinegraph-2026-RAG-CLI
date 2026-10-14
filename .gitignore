@@ -1,0 +1,5 @@
+.env
+movies.csv
+chroma_index/
+__pycache__/
+*.pkl
