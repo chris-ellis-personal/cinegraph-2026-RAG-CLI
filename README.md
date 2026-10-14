@@ -20,7 +20,6 @@ It is not a production product. It is a demonstration of industry-standard data 
   - [Dependencies](#dependencies)
   - [Neo4j Setup](#neo4j-setup)
   - [Environment Configuration](#environment-configuration)
-  - [File Paths](#file-paths)
 - [Usage](#usage)
   - [Build the Knowledge Graph](#1-build-the-knowledge-graph-run-once)
   - [Build the Vector Index](#2-build-the-vector-index-run-once)
@@ -141,7 +140,7 @@ Notable nulls: `tagline` (36%), `keywords` (24%), `budget_usd` / `revenue_usd` (
 - **Python 3.11 or higher.** Download from [python.org](https://www.python.org/downloads/). On Windows, tick **"Add Python to PATH"** during installation.
 - **Neo4j Desktop.** Download from [neo4j.com/download](https://neo4j.com/download/). A free account is required to obtain a licence key.
 - **An OpenAI API key** from [platform.openai.com](https://platform.openai.com).
-- **Project files**, all in the same folder:
+- **Project files**, all in the same folder. The scripts find `movies.csv` and `.env` relative to their own location, so no paths need editing:
 
 ```
 cinegraph-2026-RAG-CLI/
@@ -224,7 +223,7 @@ You should see 4 constraints (one per node type) and 7 indexes in total.
 
 ### Environment Configuration
 
-Create a `.env` file in the project folder:
+Create a `.env` file in the project folder (the same folder as the Python scripts):
 
 ```
 NEO4J_URI=neo4j://127.0.0.1:7687
@@ -250,21 +249,6 @@ python -c "from dotenv import load_dotenv; import os; load_dotenv(); print(os.en
 ```
 
 You should see the URI printed. If you see `None`, the file was saved as `.env.txt`. Enable "Show file extensions" in Windows Explorer and rename it.
-
-### File Paths
-
-In each of `knowledge_graph.py`, `RAG_pipeline.py` and `visualisations.py`, update the `CSV_PATH` constant near the top to the location of `movies.csv` on your machine:
-
-```python
-# Change this:
-CSV_PATH = (
-    r"C:/Users/Chris/OneDrive - TAFE/Hong Fu - Data Wrangling/"
-    r"Final Project (in progress)/cinegraph-2026/movies.csv"
-)
-
-# To your own path, for example:
-CSV_PATH = r"C:/Users/YourName/Documents/cinegraph-2026/movies.csv"
-```
 
 ## Usage
 
@@ -292,7 +276,7 @@ You should see four rows: Movie, Actor, Director and Genre, each with a count.
 
 ### 2. Build the vector index (run once)
 
-Open `RAG_pipeline.py` and set (around line 70):
+Open `RAG_pipeline.py` and set (around line 64):
 
 ```python
 BUILD_INDEX = True

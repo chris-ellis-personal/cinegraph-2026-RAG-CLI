@@ -18,6 +18,8 @@ Requirements:
 """
 
 import os
+from pathlib import Path
+
 import pandas as pd
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -26,11 +28,13 @@ from neo4j import GraphDatabase
 # CONFIGURATION
 # ---------------------------------------------------------------------------
 
-load_dotenv()
+# All paths are relative to this script's folder, so the project runs from
+# any location. Keep movies.csv and .env in the same folder as this file.
+BASE_DIR = Path(__file__).resolve().parent
 
-CSV_PATH = (
-    r"C:/Users/Chris/cinegraph-2026/movies.csv"
-)
+load_dotenv(BASE_DIR / ".env")
+
+CSV_PATH = BASE_DIR / "movies.csv"
 
 NEO4J_URI  = os.environ.get("NEO4J_URI",  "neo4j://127.0.0.1:7687")
 NEO4J_USER = os.environ.get("NEO4J_USER", "neo4j")
@@ -53,7 +57,7 @@ def get_driver():
 # Uses MERGE throughout so re-running is safe — no duplicate nodes created.
 # ---------------------------------------------------------------------------
 
-def build_knowledge_graph(csv_path: str) -> None:
+def build_knowledge_graph(csv_path: Path | str) -> None:
     """
     Reads the movies CSV and populates Neo4j with Movie, Actor, Director,
     and Genre nodes connected by APPEARED_IN, DIRECTED, HAS_GENRE, and

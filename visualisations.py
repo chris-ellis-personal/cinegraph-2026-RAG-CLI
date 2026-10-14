@@ -45,11 +45,14 @@ warnings.filterwarnings("ignore")
 # CONFIGURATION
 # ---------------------------------------------------------------------------
 
-CSV_PATH = (
-    r"C:/Users/Chris/cinegraph-2026/movies.csv"
-)
+# All paths are relative to this script's folder, so the project runs from
+# any location. Keep movies.csv in the same folder as this file.
+BASE_DIR = Path(__file__).resolve().parent
 
-OUTPUT_DIR = Path(CSV_PATH).parent
+CSV_PATH = BASE_DIR / "movies.csv"
+
+# Graphs and charts are saved next to the script
+OUTPUT_DIR = BASE_DIR
 
 # Styling constants
 BACKGROUND_COLOUR = "#0d0d0d"
@@ -70,7 +73,7 @@ MIN_CENTRALITY_NODES   = 20     # minimum nodes to compute centrality meaningful
 # DATA LOADING & SHARED UTILITIES
 # ---------------------------------------------------------------------------
 
-def load_data(csv_path: str) -> pd.DataFrame:
+def load_data(csv_path: Path | str) -> pd.DataFrame:
     """Load the movies CSV and apply basic quality filters."""
     df = pd.read_csv(csv_path)
     print(f"  Loaded {len(df):,} movies from CSV")

@@ -42,20 +42,20 @@ from tqdm import tqdm
 from dotenv import load_dotenv
 from knowledge_graph import get_driver, get_movies_by_actor, get_collaborators
 
-load_dotenv()
+# All paths are relative to this script's folder, so the project runs from
+# any location. Keep movies.csv and .env in the same folder as this file.
+BASE_DIR = Path(__file__).resolve().parent
+
+load_dotenv(BASE_DIR / ".env")
 
 # ---------------------------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------------------------
 
-CSV_PATH = (
-    r"C:/Users/Chris/cinegraph-2026/movies.csv"
-)
+CSV_PATH = BASE_DIR / "movies.csv"
 
 # Directory where ChromaDB will persist the vector index
-CHROMA_PERSIST_DIR = str(
-    Path(CSV_PATH).parent / "chroma_index"
-)
+CHROMA_PERSIST_DIR = str(BASE_DIR / "chroma_index")
 
 COLLECTION_NAME = "movies"
 
@@ -295,7 +295,7 @@ def embed_batch(texts: list[str]) -> list[list[float]]:
 # ChromaDB. Skips near-empty documents (nulls in both overview and tagline).
 # ---------------------------------------------------------------------------
 
-def build_index(csv_path: str) -> chromadb.Collection:
+def build_index(csv_path: Path | str) -> chromadb.Collection:
     """
     Full indexing pipeline: CSV → documents → embeddings → ChromaDB.
     Returns the populated ChromaDB collection.
